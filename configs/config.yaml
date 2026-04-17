@@ -1,0 +1,2 @@
+data_path: data/sample/cardio_sample.csv
+out_dir: outputs

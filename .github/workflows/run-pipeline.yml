@@ -1,0 +1,33 @@
+name: Run Cardio Pipeline
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ master, main ]
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run pipeline
+        run: |
+          python src/cardio_twin_results_pipeline.py --config configs/config.yaml
+
+      - name: Upload outputs
+        uses: actions/upload-artifact@v4
+        with:
+          name: cardio-twin-outputs
+          path: outputs/
